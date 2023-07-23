@@ -1,0 +1,4 @@
+clockogo.iml
+.idea/
+# until the api is mocked...
+*_test*
