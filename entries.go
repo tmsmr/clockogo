@@ -82,6 +82,28 @@ func NewTimeEntry(customersId int, servicesId int, billable BillableType, timeSi
 	}
 }
 
+func NewLumpsumValueEntry(customersId int, servicesId int, lumpsum float64, billable BillableType, timeSince ISO8601UTC) Entry {
+	return Entry{
+		Type:        LumpsumValue,
+		CustomersId: customersId,
+		ServicesId:  &servicesId,
+		Lumpsum:     &lumpsum,
+		Billable:    &billable,
+		TimeSince:   timeSince,
+	}
+}
+
+func NewLumpsumServiceEntry(customersId int, lumpsumServicesId int, lumpsumServicesAmount float64, billable BillableType, timeSince ISO8601UTC) Entry {
+	return Entry{
+		Type:                  LumpsumService,
+		CustomersId:           customersId,
+		LumpsumServicesId:     &lumpsumServicesId,
+		LumpsumServicesAmount: &lumpsumServicesAmount,
+		Billable:              &billable,
+		TimeSince:             timeSince,
+	}
+}
+
 type Entries struct {
 	Paging  `json:"paging"`
 	Filter  interface{} `json:"filter"`
