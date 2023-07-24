@@ -9,7 +9,7 @@ import (
 
 const iso8601UTCFormat = "2006-01-02T15:04:05Z"
 
-// mixed pointer/value receivers for query.Encoder interface required
+// mixed pointer/value receivers required for query.Encoder/json.Marshaler interfaces
 
 type ISO8601UTC time.Time
 
