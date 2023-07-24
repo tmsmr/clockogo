@@ -15,7 +15,8 @@ type Client struct {
 	hc   *http.Client
 	auth Auth
 
-	Entries *EntriesAPI
+	Entries      *EntriesAPI
+	EntriesTexts *EntriesTextsAPI
 }
 
 type HTTPClientOption func(c *http.Client)
@@ -36,6 +37,7 @@ func NewClient(auth Auth, opts ...HTTPClientOption) *Client {
 		auth: auth,
 	}
 	c.Entries = &EntriesAPI{client: c}
+	c.EntriesTexts = &EntriesTextsAPI{client: c}
 	return c
 }
 
