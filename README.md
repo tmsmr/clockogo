@@ -3,7 +3,7 @@
 - [ ] `api/absences`
 - [ ] `api/v2/clock`
 - [ ] `api/v2/customers`
-- [x] `api/v2/customers`
+- [x] `api/v2/entries`
 - [x] `api/v2/entriesTexts`
 - [ ] `api/v2/entrygroups`
 - [ ] `api/holidayscarry`
