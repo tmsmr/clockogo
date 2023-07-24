@@ -39,14 +39,15 @@ type EntriesTextsListParams struct {
 	FilterServicesId        int              `url:"filter[services_id],omitempty"`
 	FilterLumpsumServicesId int              `url:"filter[lumpsum_services_id],omitempty"`
 	FilterBillable          BillableType     `url:"filter[billable],omitempty"`
+	Page                    int              `url:"page,omitempty"`
 }
 
 type EntriesTexts struct {
 	Paging `json:"paging"`
-	Filter interface{}       `json:"filter"`
-	Mode   EntriesTextsMode  `json:"mode"`
-	Sort   EntriesTextsSort  `json:"sort"`
-	Texts  map[string]string `json:"-"`
+	Filter interface{}      `json:"filter"`
+	Mode   EntriesTextsMode `json:"mode"`
+	Sort   EntriesTextsSort `json:"sort"`
+	Texts  interface{}      `json:"texts"`
 }
 
 func (api EntriesTextsAPI) List(q EntriesTextsListParams) (*EntriesTexts, error) {
