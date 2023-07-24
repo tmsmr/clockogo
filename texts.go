@@ -43,11 +43,12 @@ type EntriesTextsListParams struct {
 }
 
 type EntriesTexts struct {
-	Paging `json:"paging"`
-	Filter interface{}      `json:"filter"`
-	Mode   EntriesTextsMode `json:"mode"`
-	Sort   EntriesTextsSort `json:"sort"`
-	Texts  interface{}      `json:"texts"`
+	Paging   `json:"paging"`
+	Filter   interface{}       `json:"filter"`
+	Mode     EntriesTextsMode  `json:"mode"`
+	Sort     EntriesTextsSort  `json:"sort"`
+	TextsRaw interface{}       `json:"texts"`
+	Texts    map[string]string `json:"-"`
 }
 
 func (api EntriesTextsAPI) List(q EntriesTextsListParams) (*EntriesTexts, error) {
@@ -61,5 +62,11 @@ func (api EntriesTextsAPI) List(q EntriesTextsListParams) (*EntriesTexts, error)
 	if err != nil {
 		return nil, err
 	}
-	return nil, nil
+	data.Texts = make(map[string]string)
+	if _, ok := data.TextsRaw.(map[string]interface{}); ok {
+		for id, text := range data.TextsRaw.(map[string]interface{}) {
+			data.Texts[id] = text.(string)
+		}
+	}
+	return &data, nil
 }
