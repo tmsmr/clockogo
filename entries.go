@@ -65,9 +65,9 @@ type Entry struct {
 	TimeLastChangeWorktime *ISO8601UTC   `json:"time_last_change_worktime" url:"-"`
 	HourlyRate             *float64      `json:"hourly_rate" url:"hourly_rate,omitempty"`
 	ServicesName           *string       `json:"services_name" url:"-"`
-	Lumpsum                *float64      `json:"lumpsum" url:"-"`
-	LumpsumServicesId      *int          `json:"lumpsum_services_id" url:"-"`
-	LumpsumServicesAmount  *float64      `json:"lumpsum_services_amount" url:"-"`
+	Lumpsum                *float64      `json:"lumpsum" url:"lumpsum,omitempty"`
+	LumpsumServicesId      *int          `json:"lumpsum_services_id" url:"lumpsum_services_id,omitempty"`
+	LumpsumServicesAmount  *float64      `json:"lumpsum_services_amount" url:"lumpsum_services_amount,omitempty"`
 	LumpsumServicesPrice   *float64      `json:"lumpsum_services_price" url:"-"`
 }
 
@@ -145,7 +145,7 @@ type SingleEntry struct {
 	Entry `json:"entry"`
 }
 
-func (api EntriesAPI) Get(id int) (*Entry, error) {
+func (api EntriesAPI) Read(id int) (*Entry, error) {
 	req, err := api.client.auth.NewRequest(http.MethodGet, BaseURL+"/api/v2/entries/"+strconv.Itoa(id), nil)
 	var data SingleEntry
 	err = api.client.Do(req, &data)
@@ -155,7 +155,7 @@ func (api EntriesAPI) Get(id int) (*Entry, error) {
 	return &data.Entry, nil
 }
 
-func (api EntriesAPI) Post(entry Entry) (*Entry, error) {
+func (api EntriesAPI) Create(entry Entry) (*Entry, error) {
 	params, err := query.Values(&entry)
 	if err != nil {
 		return nil, err
@@ -167,4 +167,31 @@ func (api EntriesAPI) Post(entry Entry) (*Entry, error) {
 		return nil, err
 	}
 	return &data.Entry, nil
+}
+
+func (api EntriesAPI) Update(entry Entry) (*Entry, error) {
+	params, err := query.Values(&entry)
+	if err != nil {
+		return nil, err
+	}
+	req, err := api.client.auth.NewRequest(http.MethodPut, BaseURL+"/api/v2/entries/"+strconv.Itoa(*entry.Id)+"?"+params.Encode(), nil)
+	var data SingleEntry
+	err = api.client.Do(req, &data)
+	if err != nil {
+		return nil, err
+	}
+	return &data.Entry, nil
+}
+
+func (api EntriesAPI) Delete(id int) error {
+	req, err := api.client.auth.NewRequest(http.MethodDelete, BaseURL+"/api/v2/entries/"+strconv.Itoa(id), nil)
+	if err != nil {
+		return err
+	}
+	var data interface{}
+	err = api.client.Do(req, data)
+	if err != nil {
+		return err
+	}
+	return nil
 }
