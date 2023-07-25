@@ -65,7 +65,9 @@ func (api EntriesTextsAPI) List(q EntriesTextsListParams) (*EntriesTexts, error)
 	data.Texts = make(map[string]string)
 	if _, ok := data.TextsRaw.(map[string]interface{}); ok {
 		for id, text := range data.TextsRaw.(map[string]interface{}) {
-			data.Texts[id] = text.(string)
+			if _, ok := text.(string); ok {
+				data.Texts[id] = text.(string)
+			}
 		}
 	}
 	return &data, nil
